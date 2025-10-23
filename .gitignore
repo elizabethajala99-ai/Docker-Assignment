@@ -1,0 +1,30 @@
+# Environment files (contain sensitive data)
+.env
+.env.local
+.env.production
+
+# Logs
+logs/
+*.log
+
+# Docker volumes
+volumes/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# WordPress uploads (if using local volumes)
+wordpress-site/wp-content/uploads/
+
+# Backup files
+*.bak
+*.backup
