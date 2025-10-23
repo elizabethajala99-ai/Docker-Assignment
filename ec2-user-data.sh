@@ -19,7 +19,7 @@ sudo systemctl enable docker
 
 # Clone your GitHub repository
 cd /home/ubuntu
-GITHUB_REPO="https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME.git" # Replace with your repo URL
+GITHUB_REPO="https://github.com/elizabethajala99-ai/Docker-Assignment.git" # Replace with your repo URL
 DEPLOY_DIR="cloudboosta-app"
 
 echo "🚀 Cloning repository from GitHub..."
