@@ -1,7 +1,3 @@
-# Environment files (contain sensitive data)
-.env
-.env.local
-.env.production
 
 # Logs
 logs/
