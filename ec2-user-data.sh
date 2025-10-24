@@ -10,18 +10,29 @@ echo "🚀 Starting Cloudboosta deployment at $(date)"
 # Update system and install required packages
 echo "📦 Installing required packages..."
 sudo apt update -y
-sudo apt install -y git docker.io curl
+sudo apt install -y git curl
 
-# Install Docker Compose v2
-echo "🐳 Installing Docker Compose..."
+# Install Docker using official script (this is more reliable than docker.io package)
+echo "🐳 Installing Docker..."
 curl -fsSL https://get.docker.com | sudo sh
 
-# Add ubuntu user to docker group
-sudo usermod -aG docker ubuntu
-
-# Start and enable Docker service
+# Start and enable Docker service immediately after installation
+echo "🔧 Starting Docker service..."
 sudo systemctl start docker
 sudo systemctl enable docker
+
+# Add ubuntu user to docker group
+echo "👤 Adding ubuntu user to docker group..."
+sudo usermod -aG docker ubuntu
+
+# Wait for Docker to be ready
+echo "⏳ Waiting for Docker to be ready..."
+sleep 5
+
+# Verify Docker is running
+echo "🔍 Verifying Docker installation..."
+sudo docker --version
+sudo systemctl status docker --no-pager
 
 # Clone your GitHub repository
 cd /home/ubuntu
@@ -44,28 +55,34 @@ sudo chown -R ubuntu:ubuntu "/home/ubuntu/$DEPLOY_DIR"
 
 # Start Docker containers
 echo "🐳 Starting Docker containers..."
+# Use sudo -u ubuntu to run as ubuntu user (who is now in docker group)
 sudo -u ubuntu docker compose pull
 sudo -u ubuntu docker compose up -d
 
+# Wait for containers to initialize
+echo "⏳ Waiting for containers to initialize..."
+sleep 15
+
 # Check if containers started successfully
 echo "🔍 Checking container status..."
-sleep 10
 sudo -u ubuntu docker compose ps
 
-# Verify WordPress is accessible
+# More robust WordPress accessibility check
 echo "🌐 Testing WordPress accessibility..."
-for i in {1..12}; do
+for i in {1..24}; do
     if curl -f -s http://localhost:8080 > /dev/null; then
         echo "✅ WordPress is responding!"
         break
     else
-        echo "⏳ Waiting for WordPress to start... (attempt $i/12)"
-        sleep 10
+        echo "⏳ Waiting for WordPress to start... (attempt $i/24)"
+        sleep 15
     fi
 done
 
-# Wait for containers to be ready
-sleep 30
+# Final verification
+echo "📊 Final container status:"
+sudo -u ubuntu docker compose ps
+sudo -u ubuntu docker compose logs --tail=10
 
 # Get public IP and log completion
 PUBLIC_IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4 2>/dev/null || echo "localhost")
