@@ -94,9 +94,19 @@ All configuration is managed through environment variables:
    - Website: http://localhost:8080
    - Admin: http://localhost:8080/wp-admin
 
-5. **Activate Theme**
+5. **Setup WordPress & Activate Theme**
+   - Visit http://localhost:8080
+   - Complete WordPress installation using credentials from your `.env` file:
+     - **Database Name**: `cloudboosta_db`
+     - **Username**: `admin`
+     - **Password**: (use `WORDPRESS_DB_PASSWORD` from .env)
+     - **Database Host**: `mysql`
+   - Create WordPress admin account using:
+     - **Username**: (use `WORDPRESS_ADMIN_USER` from .env)
+     - **Password**: (use `WORDPRESS_ADMIN_PASSWORD` from .env)
+     - **Email**: (use `WORDPRESS_ADMIN_EMAIL` from .env)
    - Go to Appearance → Themes
-   - Activate "Cloudboosta Corporate"
+   - Activate **"Cloudboosta Corporate"** theme
 
 ## ☁️ AWS Cloud Deployment
 

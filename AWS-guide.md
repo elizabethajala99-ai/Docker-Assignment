@@ -25,17 +25,34 @@
 8. **User data**: Copy the content from `ec2-user-data.sh` and update YOUR_GITHUB_USERNAME and YOUR_REPO_NAME with your actual GitHub details
 9. **Launch instance**
 
-## Step 3: CloudWatch Setup
+## Step 3: Wait for Deployment
+⚠️ **IMPORTANT**: After launching the EC2 instance, **wait 5-10 minutes** for the automated deployment to complete before accessing the website. The user-data script needs time to:
+- Install Docker
+- Clone the GitHub repository  
+- Start the containers
+- Initialize WordPress and MySQL
+
+## Step 4: CloudWatch Setup
 1. AWS Console → **CloudWatch** → **Log groups**
 2. **Create log group**: `cloudboosta-logs`
 3. **Retention**: 7 days
 
-## Step 4: Access Site
+## Step 5: Access Site
 1. Push your project to GitHub (make it public)
 2. Update the GitHub repo URL in the user data script
 3. EC2 → Instances → Get **Public IP**
-4. Visit: `http://PUBLIC_IP:8080`
-5. Complete WordPress setup
+4. **⏳ Wait 5-10 minutes** for full deployment to complete
+5. Visit: `http://PUBLIC_IP:8080`
+6. **Setup WordPress** using credentials from `.env` file:
+   - **Database Name**: `cloudboosta_db`
+   - **Username**: `admin` 
+   - **Password**: (from `WORDPRESS_DB_PASSWORD` in .env)
+   - **Database Host**: `mysql`
+7. **Create WordPress Admin Account**:
+   - **Username**: (from `WORDPRESS_ADMIN_USER` in .env)
+   - **Password**: (from `WORDPRESS_ADMIN_PASSWORD` in .env)  
+   - **Email**: (from `WORDPRESS_ADMIN_EMAIL` in .env)
+8. **Activate Theme**: Go to Appearance → Themes → Activate **"Cloudboosta Corporate"**
 
 ## SSH Access
 ```bash
