@@ -12,12 +12,14 @@ echo "📦 Installing required packages..."
 sudo apt update -y
 sudo apt install -y git curl
 
-# Install Docker using official script (this is more reliable than docker.io package)
-echo "🐳 Installing Docker..."
+# Install Docker using official script only
+echo "🐳 Installing Docker CE..."
+export DEBIAN_FRONTEND=noninteractive
 curl -fsSL https://get.docker.com | sudo sh
 
-# Start and enable Docker service immediately after installation
+# Ensure Docker service is properly started
 echo "🔧 Starting Docker service..."
+sudo systemctl stop docker || true
 sudo systemctl start docker
 sudo systemctl enable docker
 
@@ -25,14 +27,15 @@ sudo systemctl enable docker
 echo "👤 Adding ubuntu user to docker group..."
 sudo usermod -aG docker ubuntu
 
-# Wait for Docker to be ready
+# Wait for Docker to be fully ready
 echo "⏳ Waiting for Docker to be ready..."
-sleep 5
+sleep 10
 
-# Verify Docker is running
+# Verify Docker is running properly
 echo "🔍 Verifying Docker installation..."
 sudo docker --version
-sudo systemctl status docker --no-pager
+sudo systemctl is-active docker
+sudo docker info
 
 # Clone your GitHub repository
 cd /home/ubuntu
